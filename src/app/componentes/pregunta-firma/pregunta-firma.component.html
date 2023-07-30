@@ -1,0 +1,26 @@
+<h2 class="main__title"><span>{{ titulo }}</span></h2>
+<h3 class="main__title"><span>Firma: </span></h3>
+<div class='justificar' [ngStyle]="{'overflow-y' : (canvasTouched) ? 'hidden' : 'scroll'}">
+    <div class="ml-8 mt-8" *ngIf="showCanvas">
+        <canvas (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)" (touchmove)="onMouseMove($event)"
+                (touchstart)="onMouseDown($event)" #signPad [width]="canvasWidth" height="200" style="border: 2px solid black; border-radius: .5rem; touch-action: none;">
+        </canvas>
+        <div class="w-full flex text-right mt-2 mb-8">
+          <button mat-raised-button color="warn" (click)="borrarFirma()" class="mr-4">Borrar</button>
+          <button mat-raised-button color="primary" (click)="submit()" *ngIf="!showForm">Guardar</button>
+        </div>
+    </div>
+    <div class="mt-16">
+      <form [formGroup]="datosAdicionalesForm" *ngIf="showForm">
+        <mat-form-field class="w-100" *ngFor="let dato of datosAdicionales">
+          <mat-label>{{dato.descripcion}}</mat-label>
+          <input type="text" matInput [formControlName]="dato.id.toString()">
+      </mat-form-field>
+      </form>
+    </div>
+    <div class="center_div mb-8" *ngIf="showForm">
+      <button mat-button class="btnsiguiente" (click)="submit()">
+          <div>Siguiente</div>
+      </button>
+    </div>
+</div>

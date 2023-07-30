@@ -1,0 +1,10 @@
+<div class="col-md-3" *ngFor="let productObj of productListData | 
+     slice: lowValue : highValue">
+     {{productObj}}
+ </div>
+ <button (click)="nextPage()">next</button>
+
+<mat-paginator [length]="productListData.length" [hidden]="true" [pageSize]="pageSize" 
+   (page)="getPaginatorData($event) ">
+
+</mat-paginator> 

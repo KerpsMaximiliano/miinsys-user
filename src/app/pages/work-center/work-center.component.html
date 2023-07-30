@@ -1,0 +1,5 @@
+<form class="main__form m-t-40" *ngFor="let workcenter of getWorkCenters()">
+    <input type="button" value="{{workcenter.name}}" class="main__input--send"
+        routerLink="../../servicesTypes/{{idCompany}}/{{workcenter.id}}">
+    <br>
+</form>

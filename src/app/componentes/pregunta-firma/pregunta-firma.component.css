@@ -1,0 +1,70 @@
+.justificar {
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   font-size: 20px;
+}
+
+.cuadrotexto {
+   padding: 90px;
+   border-radius: 15px;
+   background-color: rgba(82, 81, 81, 0.373);
+   border: none;
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   font-size: 18px;
+   box-shadow: 0 0 0 7px #EEF5F7;
+   width: 100%;
+}
+
+.cuadrotexto:focus {
+   background-color: #EEF5F7;
+   box-shadow: 0 0 0 7px #c2c7c9;
+}
+
+.btnsiguiente {
+   padding: 15px;
+   border-radius: 15px;
+   border: none;
+   font-size: 17px;
+   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   cursor: pointer;
+   background-color: rgb(166, 173, 72);
+   color: white;
+}
+
+.btnsiguiente:hover {
+   background-color: rgb(162, 162, 162);
+}
+
+.iconocam {
+   padding: 15px 20px;
+   width: 80px;
+   cursor: pointer;
+   background-color: rgb(223, 223, 223);
+   border-radius: 15px;
+   margin-top: 50px;
+}
+
+.iconocam:hover {
+   background-color: rgb(162, 162, 162);
+}
+
+.center_div {
+   display: flex;
+   width: 100%;
+   justify-content: center;
+}
+
+.center_div:last-child {
+   margin-top: 2rem;
+}
+
+.button {
+   background-color: rgb(166, 173, 72);
+   color: white;
+}
+
+.camera {
+   max-width: 3rem;
+   margin: 0 auto;
+   color: black;
+   background-color: rgba(162, 162, 162, 0.5);
+}

@@ -1,0 +1,57 @@
+<!-- <form class="justificar">
+    <div>
+        <label class="col-md-2">FECHA:</label>
+        <input type='text' placeholder="Fecha" class="cuadro" value=''>
+    </div>
+    <br>
+    <div>
+        <label class="col-md-2">HORA:</label>
+        <input type='text' placeholder="Hora" class="cuadro" value=''>
+    </div>
+    <br>
+    <div>
+        <label class="col-md-2">UBICACIÓN:</label>
+        <input type='text' placeholder="Ubicación" class="cuadro" value=''>
+    </div>
+    <br>
+    <div>
+        <label class="col-md-2">RESPUESTA:</label>
+        <input type='text' placeholder="Respuesta" class="cuadro" value=''>
+    </div>
+    <div class="siguiente">
+        <input type='submit' class="btnsiguiente" value='Siguiente'>
+    </div>
+</form> -->
+
+<div class="dialog-container">
+  <form [formGroup]="formularioSendForm">
+    <mat-form-field class="w-100 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">person</mat-icon>
+      <input matInput placeholder="Usuario" [formControlName]="'usuario'" style="height: 2rem;">
+    </mat-form-field>
+    <mat-form-field class="w-100 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">calendar_month</mat-icon>
+      <input matInput placeholder="Fecha" [formControlName]="'fecha'" style="height: 2rem;">
+    </mat-form-field>
+    <mat-form-field class="w-100 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">schedule</mat-icon>
+      <input matInput placeholder="Hora" [formControlName]="'hora'" style="height: 2rem;">
+    </mat-form-field>
+    <mat-form-field class="w-100 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">location_on</mat-icon>
+      <input matInput placeholder="Ubicación" [formControlName]="'ubicacion'" style="height: 2rem;">
+    </mat-form-field>
+    <mat-form-field class="w-50 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">check_circle</mat-icon>
+      <input matInput placeholder="Respuestas" [formControlName]="'respuestasPositivas'" style="height: 2rem;">
+    </mat-form-field>
+    <mat-form-field class="w-50 mt-1">
+      <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">cancel</mat-icon>
+      <input matInput placeholder="Respuestas" [formControlName]="'respuestasNegativas'" style="height: 2rem;">
+    </mat-form-field>
+  </form>
+  <div mat-dialog-actions style="width: 100%; justify-content: center; display: flex; margin-top: 1rem;"
+    class="boton-siguiente-div">
+    <button mat-button (click)="sendFormulario()" mat-flat-button class="text-center"><span>Finalizar</span></button>
+  </div>
+</div>

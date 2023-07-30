@@ -1,0 +1,4 @@
+<form class="main__form m-t-40" *ngFor="let criticTask of getCriticTask()">
+        <button class="main__input--send" (click)="accessFormulario(criticTask)">{{criticTask.name}}</button>
+    <br>
+</form>

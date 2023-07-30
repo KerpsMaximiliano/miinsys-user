@@ -1,0 +1,25 @@
+<div class="formulario-simple-container">
+    <div id="first" *ngIf="showFirst">
+        <h2 class="text-center">¿El servicio cumple o no cumple?</h2>
+        <div>
+            <button mat-button class="button" (click)="answer(1)"><mat-icon>done</mat-icon></button>
+            <button mat-button class="button error" (click)="answer(2)"><mat-icon>close</mat-icon></button>
+        </div>        
+    </div>
+    <div id="second" *ngIf="showSecond" style="display: flex; flex-direction: column">
+        <h2 class="text-center">¿Por qué no cumple?</h2>
+        <textarea matInput placeholder="Texto" cols="25" rows="10" style="margin: 0 auto 2rem 0;" class="cuadrotexto" [(ngModel)]="finalAnswer.text"></textarea>
+        <button class="button camera" mat-button (click)="answer(3)">
+            <input id="camera_button" type="file" accept="image/*" capture="environment" style="display: none;" (change)="file($event)">
+            <mat-icon>photo_camera</mat-icon>
+        </button>
+        <button class="button" mat-button style="margin-top: 1rem;" (click)="answer(4)"><b>SIGUIENTE</b></button>
+    </div>
+    <div id="third" *ngIf="showThird" class="show-results">
+        <h2 class="text-center" *ngIf="!finalAnswer.answer">El servicio no cumple</h2>
+        <h2 class="text-center" *ngIf="finalAnswer.answer">El servicio cumple</h2>
+        <h3 class="text-center">{{finalAnswer.text}}</h3>
+        <img [src]="imgSrc" *ngIf="imgSrc">
+        <button class="button" mat-button (click)="send()">Enviar</button>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="dialog-container">
+  <h1 mat-dialog-title>Salir ?</h1>
+  <h2 mat-dialog-title>Al salir perderá los cambios del formulario</h2>
+  <div mat-dialog-actions class="mat-actions">
+    <button mat-button (click)="onNoClick()" mat-flat-button color="warn" class="button-back">Cancelar</button>
+    <button mat-button (click)="leave()" cdkFocusInitial mat-flat-button class="button-submit">Salir</button>
+  </div>
+</div>

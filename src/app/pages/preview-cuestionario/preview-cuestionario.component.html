@@ -1,0 +1,82 @@
+<div *ngIf="showPreview">
+  <div *ngFor="let seccion of modeloCuestionario.secciones">
+    <mat-card *ngIf="seccion.preguntas.length > 0" class="mb-4" [ngClass]="{'mb-12': modeloCuestionario.secciones.indexOf(seccion) == (modeloCuestionario.secciones.length - 1)}">
+      <mat-card-header>
+        <h2 *ngIf="seccion.orden != 0">{{seccion.sec_descripcion}}</h2>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngFor="let pregunta of seccion.preguntas" class="w-full">
+          <b>{{pregunta.pre_descripcion}}</b>
+          <div *ngIf="pregunta.tpr_id == 4 || pregunta.tpr_id == 5 || pregunta.tpr_id == 7 || pregunta.tpr_id == 8 || pregunta.tpr_id == 11 || pregunta.tpr_id == 17">
+            <p>{{answers[pregunta.pre_id].preguntaValor}}</p>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 6"><!--Combo-->
+            <p>{{answers[pregunta.pre_id].preguntaValor}}</p>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 9"><!--Fecha-->
+            <p>{{answers[pregunta.pre_id].preguntaValor}}</p>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 10"><!--Selección Radio-->
+            <div *ngFor="let opcion of pregunta.opciones">
+              <div *ngIf="opcion.opc_id == answers[pregunta.pre_id].preguntaOpcion">
+                <div *ngIf="opcion.opc_valor == 0">
+                  <p>{{opcion.opc_descripcion}} - Justificación: {{answers[pregunta.pre_id].justificacion_imagen}}</p>
+                  <button class="button camera mb-4" mat-button (click)="openFoto(answers[pregunta.pre_id].preguntaImagenId)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="opcion.opc_valor != 0">
+                  <p>{{opcion.opc_descripcion}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 12"><!--Calendario-->
+            <p>{{answers[pregunta.pre_id].preguntaValor}}</p>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 13" style="border: 2px solid gray;" class="rounded"><!--Lista de datos-->
+            <div *ngIf="listaMostrar[pregunta.pre_id]">
+              <div *ngFor="let col of listaMostrar[pregunta.pre_id].columnas; let i = index">
+                <b>{{col}}: </b> {{listaMostrar[pregunta.pre_id].datos[i]}}
+              </div>
+            </div>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 14"><!--Foto-->
+            <button class="button camera mb-4" mat-button (click)="openFoto(answers[pregunta.pre_id].preguntaImagenId)" *ngIf="answers[pregunta.pre_id].preguntaImagenId">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 15"><!--Selección SI/NO-->
+            <div *ngFor="let opcion of pregunta.opciones">
+              <div *ngIf="opcion.opc_id == answers[pregunta.pre_id].preguntaOpcion">
+                <div *ngIf="opcion.opc_valor == 0">
+                  <p>{{opcion.opc_descripcion}} - Justificación: {{answers[pregunta.pre_id].justificacion_imagen}}</p>
+                  <button class="button camera mb-4" mat-button (click)="openFoto(answers[pregunta.pre_id].preguntaImagenId)">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="opcion.opc_valor != 0">
+                  <p>{{opcion.opc_descripcion}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="pregunta.tpr_id == 16" style="margin-bottom: 1rem;"><!--Firma-->
+            <button class="button camera" mat-button (click)="openFoto(answers[pregunta.pre_id].preguntaImagenId)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <div *ngFor="let firmaData of firmasDatosAdicionales[pregunta.pre_id]">
+              <b>{{firmaData.title}} :  </b>{{firmaData.valor}}
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  
+  <div mat-dialog-actions style="width: 100%; justify-content: center; display: flex; margin-top: 1rem;"
+      class="boton-siguiente-div mb-8">
+      <button mat-button (click)="return()" mat-flat-button class="text-center mr-4"><span>Volver</span></button>
+      <button mat-button (click)="sendFormulario()" mat-flat-button class="text-center" [disabled]="awaitingResponse" [ngStyle]="{'background-color' : (awaitingResponse) ? 'gray' : ''}"><span>Finalizar</span></button>
+    </div>
+</div>

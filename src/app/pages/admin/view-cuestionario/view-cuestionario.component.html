@@ -1,0 +1,48 @@
+<div style="min-width: 100vw; padding-right: 40px;">
+    <div *ngIf="!errorFind">
+        <div *ngIf="showData">
+            <div class="header">
+                <mat-form-field appearance="fill" style="width: 20vw;">
+                    <mat-label>Sección</mat-label>
+                    <mat-select>
+                      <mat-option *ngFor="let seccion of cuestionarioModel" [value]="seccion.seccionId" (onSelectionChange)="selectSeccion(seccion.seccionId, $event)">
+                        {{seccion.nombre}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <h2>Cuestionario: {{tituloCuestionario}}</h2>
+                <h2>Usuario: {{currentCuestionario.cuestionario.userName}}</h2>
+            </div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+                <ng-container matColumnDef="preguntaId">
+                  <th mat-header-cell *matHeaderCellDef> Id pregunta </th>
+                  <td mat-cell *matCellDef="let element"> {{element.preguntaId}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="pregunta">
+                    <th mat-header-cell *matHeaderCellDef> Pregunta </th>
+                    <td mat-cell *matCellDef="let element"> {{element.label}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="preguntaTipo">
+                  <th mat-header-cell *matHeaderCellDef> Tipo de pregunta</th>
+                  <td mat-cell *matCellDef="let element"> {{element.preguntaTipo | tipoPregunta}} </td>
+                </ng-container>
+    
+                <!-- <ng-container matColumnDef="preguntaOpcion">
+                    <th mat-header-cell *matHeaderCellDef> Id opción elegida </th>
+                    <td mat-cell *matCellDef="let element"> {{element.preguntaOpcion}} </td>
+                  </ng-container> -->
+              
+                <ng-container matColumnDef="preguntaValor">
+                  <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+                  <td mat-cell *matCellDef="let element"> {{element.preguntaValor | valorPregunta:element}} </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+    <h2 *ngIf="errorFind">No se pudo encontrar un cuestionario completado de ID {{cuestionarioId}}</h2>
+</div>

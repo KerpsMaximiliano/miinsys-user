@@ -1,0 +1,8 @@
+<h2 class="text-center"><span>{{nombreEmpresa}}</span></h2>
+<h2 class="text-center main__title"><span>Seleccionar Planta</span></h2>
+<div *ngIf="plantas.length > 0">
+    <form class="main__form m-t-40" *ngFor="let planta of plantas">
+        <button class="main__input--send" type="button" (click)="accessPlanta(planta.id_planta)"><span>{{planta.descripcion}}</span></button>
+        <br>
+    </form>
+</div>

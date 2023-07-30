@@ -1,0 +1,70 @@
+<mat-tab-group style="min-width: 100vw; padding-right: 40px;">
+    <mat-tab label="Cuestionarios Completados">
+        <div *ngIf="!errorCuestionarios">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> Id </th>
+                  <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="fechaCarga">
+                  <th mat-header-cell *matHeaderCellDef> Fecha de carga </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cuestionario.fechaCarga | date}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="horaCarga">
+                    <th mat-header-cell *matHeaderCellDef> Hora de carga </th>
+                    <td mat-cell *matCellDef="let element"> {{element.cuestionario.fechaCarga | date : 'shortTime'}} </td>
+                  </ng-container>
+              
+                <ng-container matColumnDef="cuestionarioId">
+                  <th mat-header-cell *matHeaderCellDef> Id Cuestionario </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cuestionario.cuestionarioId}} </td>
+                </ng-container>
+              
+                <ng-container matColumnDef="username">
+                  <th mat-header-cell *matHeaderCellDef> Nombre de ususario </th>
+                  <td mat-cell *matCellDef="let element"> {{element.cuestionario.userName}} </td>
+                </ng-container>
+              
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="open(row)" class="mat-row-hover"></tr>
+            </table>
+        </div>
+        <div *ngIf="errorCuestionarios">
+            <h1>No se encontraron cuestionarios guardados</h1>
+        </div>
+    </mat-tab>
+    <mat-tab label="Cuestionarios Modelo">
+        <table mat-table [dataSource]="formularios" class="mat-elevation-z8 w-100">
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Id </th>
+              <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+              </ng-container>
+          
+            <ng-container matColumnDef="fechaCarga">
+              <th mat-header-cell *matHeaderCellDef> Fecha </th>
+              <td mat-cell *matCellDef="let element"> {{element.fechaAlta | date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="horaCarga">
+                <th mat-header-cell *matHeaderCellDef> Hora de carga </th>
+                <td mat-cell *matCellDef="let element"> {{element.fechaAlta | date : 'shortTime'}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+        </table>
+    </mat-tab>
+    <mat-tab label="Estadísticas">
+        <div *ngIf="errorCuestionarios">
+            <h2>Sin datos para Estadísticas</h2>
+        </div>
+        <div echarts [options]="options" class="demo-chart" *ngIf="!errorCuestionarios"></div>
+    </mat-tab>
+</mat-tab-group>

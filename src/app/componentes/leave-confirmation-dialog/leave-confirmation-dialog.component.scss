@@ -1,0 +1,22 @@
+.dialog-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.mat-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.mat-actions > .button-back {
+    flex: 50%
+}
+
+.mat-actions > .button-submit {
+    flex: 50%;
+    background-color: rgb(166, 173, 72);
+    color: white;
+}

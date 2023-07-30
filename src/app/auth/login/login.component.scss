@@ -1,0 +1,46 @@
+@import "/src/app/utilities/colours.scss";
+
+.login_container {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    max-height: 100%;
+    .login-title {
+        height: 15%;
+        min-height: 15%;
+    }
+    form {
+        height: 75%;
+        min-height: 75%;
+        min-height: 75%;
+    }
+    .login-buttons {
+        
+    }
+    .login_button {
+        margin-top: 5rem;
+    }
+    .login-button-send {
+        width: 100%;
+        outline: none;
+        border: none;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: $azulPrincipal;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 1%;
+    }
+    .login-button-send:hover {
+        background-color: #00000072;
+    }
+    
+}
+
+.api-test:hover {
+    cursor: pointer;
+}

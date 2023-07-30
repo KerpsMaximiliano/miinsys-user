@@ -1,0 +1,9 @@
+<h2 class="text-center"><span>{{nombreEmpresa}}</span></h2>
+<h3 class="text-center" *ngIf="nombrePlanta != ''"><b>Planta -</b> <span>{{nombrePlanta}}</span></h3>
+<h2 class="text-center main__title"><span>Seleccionar Grupo</span></h2>
+<div>
+    <form class="main__form m-t-40" *ngFor="let grupo of grupos">
+        <button class="main__input--send" type="button" (click)="accessGrupo(grupo.id)"><span>{{grupo.descripcion}}</span></button>
+        <br>
+    </form>
+</div>

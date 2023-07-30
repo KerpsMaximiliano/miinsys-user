@@ -1,0 +1,69 @@
+<!--
+<div id="footer" class="flex">
+    <div class="row flex justify-content-between w-100 pl-2 pr-2" style=" margin: 0 auto">
+         <div> <img id="iconoatras" src="../assets/images/icon/rotate-left-solid.svg"> </div>
+         <div> <img src="../assets/images/icon/collahuasi-300x240.jpg" alt="logo optimal" class="logoOptimal"> </div>
+         <div> <img src="../assets/images/icon/house-solid.svg"> </div>
+     </div> 
+ </div>
+ -->
+
+<section *ngIf="!register">
+    <div class="example-button-row" *ngIf="expandedMenu">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab color="warn" (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="example-button-row" *ngIf="expandedMenu && buttons">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab (click)="goHome()" class="common-button">
+                    <mat-icon>home</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="example-button-row" *ngIf="expandedMenu && buttons">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab (click)="return()" class="common-button">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="example-button-row">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab (click)="openMenu()" class="common-button">
+                    <mat-icon>{{ menuIcon }}</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section *ngIf="register">
+    <div class="example-button-row" *ngIf="expandedMenu">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab (click)="logout()" class="common-button">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="example-button-row">
+        <div class="example-flex-container">
+            <div class="example-button-container">
+                <button mat-fab (click)="openMenu()" class="common-button">
+                    <mat-icon>{{ menuIcon }}</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

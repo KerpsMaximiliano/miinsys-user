@@ -1,0 +1,9 @@
+<div *ngIf="empresas.length > 0">
+    <form class="main__form m-t-40" *ngFor="let empresa of empresas">
+        <button class="main__input--send" type="button" (click)="accessEmpresa(empresa.id)">{{empresa.descripcion}}</button>
+        <br>
+    </form>
+</div>
+<div *ngIf="empresas.length == 0">
+    <h1>No tiene empresa asociada comuníquese con el administrador de la aplicación para su empresa</h1>
+</div>

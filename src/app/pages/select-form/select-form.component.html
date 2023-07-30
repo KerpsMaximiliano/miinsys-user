@@ -1,0 +1,14 @@
+<h2 class="text-center"><span>{{nombreEmpresa}}</span></h2>
+<h3 class="text-center" *ngIf="nombrePlanta != '' && (nombreGrupo != null && nombreGrupo != '')"><b>Planta -</b> <span>{{nombrePlanta}}</span> / <b>Grupo -</b> <span>{{nombreGrupo}}</span></h3>
+<h3 class="text-center" *ngIf="nombrePlanta != '' && (nombreGrupo == '' || nombreGrupo == null)"><b>Planta -</b> <span>{{nombrePlanta}}</span></h3>
+<h3 class="text-center" *ngIf="(nombreGrupo != null && nombreGrupo != '') && nombrePlanta == ''"><b>Grupo -</b> <span>{{nombreGrupo}}</span></h3>
+<h2 class="text-center main__title"><span>Seleccionar Formulario</span></h2>
+<div *ngIf="formularios.length > 0">
+    <form class="main__form m-t-40" *ngFor="let formulario of formularios">
+        <button class="main__input--send" (click)="accessFormulario(formulario)"><span>{{formulario.name}}</span></button>
+        <br>
+    </form>
+</div>
+<div *ngIf="formularios.length == 0">
+    <h1><span>No tiene cuestionarios asociados comuníquese con el administrador de la aplicación para su empresa</span></h1>
+</div>

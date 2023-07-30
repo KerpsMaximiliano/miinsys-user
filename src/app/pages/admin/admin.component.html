@@ -1,0 +1,12 @@
+<!-- <div [@triggerName]="prepareRoute(outlet)">
+    <router-outlet (activate)="componentLoaded($event)" #outlet="outlet"></router-outlet>
+</div> -->
+
+<mat-toolbar>
+    <img src="../assets/images/icon/collahuasi-300x240.jpg" alt="" class="header-logo">
+    <span>{{title}}</span>
+</mat-toolbar>
+
+<div class="admin-container">
+    <router-outlet (activate)="componentLoaded($event)"></router-outlet>
+</div>

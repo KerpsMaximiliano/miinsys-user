@@ -1,0 +1,278 @@
+<mat-spinner *ngIf="loading" style="margin: 0 auto;"></mat-spinner>
+
+<div class="progress-bar">
+    <div id="inner-progress-bar">
+        <p></p>
+    </div>
+</div>
+
+<form *ngIf="showFormTwo && !loading" [formGroup]="cuestionarioForm">
+    <h2 class="text-center"><span>{{cuestionarioBackTitle}}</span></h2>
+    <div *ngFor="let seccion of cuestionarioBack; let i = index">
+        <div *ngIf="seccion.orden === 0" [id]="seccion.nombre">
+            <div *ngFor="let pregunta of seccion.preguntas">
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 30">
+                    <mat-label><b>Hora</b></mat-label>
+                    <input type="time" matInput [formControlName]="'hora'">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 4">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 5">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 6">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <mat-select [formControlName]="pregunta.control">
+                        <mat-option [value]="opcion.descripcion" class="opcion" *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 7">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="number" matInput [formControlName]="pregunta.control" (keypress)="blockInvalidChar($event)">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 8">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 9">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <div style="margin-top: 1rem;" *ngIf="pregunta.tipo === 10">
+                    <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                    <br>
+                    <mat-radio-group [formControlName]="pregunta.control" (change)="radioEventBack($event, pregunta.control, seccion, i)">
+                        <mat-radio-button [value]="opcion.id" class="radio-item radio-bien"
+                            [ngClass]="[ opcion.valor == 0 ? 'radio-mal' : 'radio-bien']"
+                            *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 11">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 12">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input matInput [matDatepicker]="picker" [formControlName]="pregunta.control">
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 13">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <mat-select [formControlName]="pregunta.control" (selectionChange)="selectLista($event, pregunta.lst_id)">
+                        <mat-option [value]="fila.id_fila" class="opcion" *ngFor="let fila of listas[pregunta.lst_id].lista">{{fila.descripciones.descripcion1}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="pregunta.tipo === 13" class="w-100 ml-4">
+                    <div *ngFor="let item of listas[pregunta.lst_id].listaDatosColumna; let i = index" class="flex flex-col">
+                        <b>{{item.name}}: </b> {{listaMostrar[pregunta.lst_id] ? listaMostrar[pregunta.lst_id][i] : ''}}
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; margin-bottom: 1rem" *ngIf="pregunta.tipo === 14">
+                    <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                    <br>
+                    <div class="w-100 upload-foto">
+                        <button class="button camera" mat-button (click)="uploadFoto(pregunta.control)">
+                            <input [id]="'camera'+pregunta.control" type="file" accept="image/*" capture="environment" style="display: none;" (change)="file($event, pregunta.control)">
+                            <mat-icon>photo_camera</mat-icon>
+                        </button>
+                        <button class="button camera" mat-button (click)="openFoto(pregunta.control)" *ngIf="cuestionarioForm.get(pregunta.control)?.value != '' && cuestionarioForm.get(pregunta.control)?.value != null">
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;" *ngIf="pregunta.tipo === 15">
+                    <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                    <br>
+                    <mat-radio-group [formControlName]="pregunta.control" (change)="radioEventBack($event, pregunta.control, seccion, i)">
+                        <mat-radio-button [value]="opcion.id" class="radio-item radio-bien"
+                        [ngClass]="[ opcion.valor == 0 ? 'radio-mal' : 'radio-bien']"
+                            *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <mat-form-field class="w-100" *ngIf="pregunta.tipo === 17">
+                    <mat-label><b>{{pregunta.label}}</b></mat-label>
+                    <input type="text" matInput [formControlName]="pregunta.control">
+                </mat-form-field>
+                <div>
+                    <div *ngIf="pregunta.preguntaId === 75 && cuestionarioForm.controls[pregunta.control]?.errors?.['max']">
+                        <p style="color: red;">No debe ser mayor a 10</p>
+                    </div>
+                    <div *ngIf="(pregunta.preguntaId === 76 || pregunta.preguntaId === 77) && cuestionarioForm.controls[pregunta.control]?.errors?.['max']">
+                        <p style="color: red;">No debe ser mayor a 2</p>
+                    </div>
+                    <div *ngIf="(pregunta.preguntaId >= 75 && pregunta.preguntaId <= 77) && cuestionarioForm.controls[pregunta.control]?.errors?.['min']">
+                        <p style="color: red;">No debe ser menor a 0</p>
+                    </div>
+                    <div *ngIf="((pregunta.preguntaId >= 78 && pregunta.preguntaId <= 87) || pregunta.preguntaId === 163) && cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength']">
+                        <p style="color: red;">Máximo 128 números</p>
+                    </div>
+                    <div *ngIf="(pregunta.preguntaId === 88 || pregunta.preguntaId === 162 || pregunta.preguntaId === 163) && cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength']">
+                        <p style="color: red;">Máximo 128 caracteres</p>
+                    </div>
+                    <div *ngFor="let validator of pregunta.validators">
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['required'] && validator.id_validacion == 0 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['max'] && validator.id_validacion == 1 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['min'] && validator.id_validacion == 2 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['minlength'] && validator.id_validacion == 3 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength'] && validator.id_validacion == 4 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                    </div>
+                    <div>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['pattern'] && cuestionarioForm.controls[pregunta.control]?.touched && pregunta.tipo == 5">Debe contener solo texto</p>
+                        <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['pattern'] && cuestionarioForm.controls[pregunta.control]?.touched && pregunta.tipo == 7">Debe contener solo números</p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <mat-accordion *ngIf="seccion.orden != 0 && seccion.preguntas.length > 0">
+            <mat-expansion-panel (opened)="panelOpenBack(i)" (closed)="panelCloseBack(seccion, i)" style="margin-bottom: 1rem;" [id]="seccion.nombre">
+                <mat-expansion-panel-header [class]="panelClassesBack[i].class">
+                    <mat-panel-title>
+                        {{seccion.nombre}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div>
+                    <div *ngFor="let pregunta of seccion.preguntas">
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 30">
+                            <mat-label><b>Hora</b></mat-label>
+                            <input type="time" matInput [formControlName]="'hora'">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 4">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 5">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 6">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <mat-select [formControlName]="pregunta.control">
+                                <mat-option [value]="opcion.descripcion" class="opcion" *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 7">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="number" matInput [formControlName]="pregunta.control" (keypress)="blockInvalidChar($event)">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 8">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 9">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <div style="margin-top: 1rem;" *ngIf="pregunta.tipo === 10">
+                            <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                            <br>
+                            <mat-radio-group [formControlName]="pregunta.control" (change)="radioEventBack($event, pregunta.control, seccion, i)">
+                                <mat-radio-button [value]="opcion.id" class="radio-item radio-bien"
+                                    [ngClass]="[ opcion.valor == 0 ? 'radio-mal' : 'radio-bien']"
+                                    *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 11">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 12">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input matInput [matDatepicker]="picker" [formControlName]="pregunta.control">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 13">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <mat-select [formControlName]="pregunta.control" (selectionChange)="selectLista($event, pregunta.lst_id)">
+                                <mat-option [value]="fila.id_fila" class="opcion" *ngFor="let fila of listas[pregunta.lst_id].lista">{{fila.descripciones.descripcion1}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div *ngIf="pregunta.tipo === 13" class="w-100 ml-4">
+                            <div *ngFor="let item of listas[pregunta.lst_id].listaDatosColumna; let i = index" class="flex flex-col">
+                                <b>{{item.name}}: </b> {{listaMostrar[pregunta.lst_id] ? listaMostrar[pregunta.lst_id][i] : ''}}
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; margin-bottom: 1rem" *ngIf="pregunta.tipo === 14">
+                            <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                            <br>
+                            <div class="w-100 upload-foto">
+                                <button class="button camera" mat-button (click)="uploadFoto(pregunta.control)">
+                                    <input [id]="'camera'+pregunta.control" type="file" accept="image/*" capture="environment" style="display: none;" (change)="file($event, pregunta.control)">
+                                    <mat-icon>photo_camera</mat-icon>
+                                </button>
+                                <button class="button camera" mat-button (click)="openFoto(pregunta.control)" *ngIf="cuestionarioForm.get(pregunta.control)?.value != '' && cuestionarioForm.get(pregunta.control)?.value != null">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;" *ngIf="pregunta.tipo === 15">
+                            <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                            <br>
+                            <mat-radio-group [formControlName]="pregunta.control" (change)="radioEventBack($event, pregunta.control, seccion, i)">
+                                <mat-radio-button [value]="opcion.id" class="radio-item radio-bien"
+                                    [ngClass]="[ opcion.valor == 0 ? 'radio-mal' : 'radio-bien']"
+                                    *ngFor="let opcion of pregunta.opciones">{{opcion.descripcion}}</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div style="margin-top: 1rem;" *ngIf="pregunta.tipo === 16">
+                            <label style="padding-bottom: 0.5rem;"><b>{{pregunta.label}}</b></label>
+                            <br>
+                            <div class="w-100 upload-foto">
+                                <button class="button camera" mat-button (click)="sign($event, pregunta.control, seccion, i)">
+                                    <mat-icon>draw</mat-icon>
+                                </button>
+                                <button class="button camera" mat-button (click)="openFoto(pregunta.control)" *ngIf="cuestionarioForm.get(pregunta.control)?.value != '' && cuestionarioForm.get(pregunta.control)?.value != null">
+                                    <mat-icon>visibility</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <mat-form-field class="w-100" *ngIf="pregunta.tipo === 17">
+                            <mat-label><b>{{pregunta.label}}</b></mat-label>
+                            <input type="text" matInput [formControlName]="pregunta.control">
+                        </mat-form-field>
+                        <div>
+                            <div *ngIf="pregunta.preguntaId === 75 && cuestionarioForm.controls[pregunta.control]?.errors?.['max']">
+                                <p style="color: red;">No debe ser mayor a 10</p>
+                            </div>
+                            <div *ngIf="(pregunta.preguntaId === 76 || pregunta.preguntaId === 77) && cuestionarioForm.controls[pregunta.control]?.errors?.['max']">
+                                <p style="color: red;">No debe ser mayor a 2</p>
+                            </div>
+                            <div *ngIf="(pregunta.preguntaId >= 75 && pregunta.preguntaId <= 77) && cuestionarioForm.controls[pregunta.control]?.errors?.['min']">
+                                <p style="color: red;">No debe ser menor a 0</p>
+                            </div>
+                            <div *ngIf="((pregunta.preguntaId >= 78 && pregunta.preguntaId <= 87) || pregunta.preguntaId === 163) && cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength']">
+                                <p style="color: red;">Máximo 128 números</p>
+                            </div>
+                            <div *ngIf="(pregunta.preguntaId === 88 || pregunta.preguntaId === 162 || pregunta.preguntaId === 163) && cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength']">
+                                <p style="color: red;">Máximo 128 caracteres</p>
+                            </div>
+                            <div *ngFor="let validator of pregunta.validators">
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['required'] && validator.id_validacion == 0 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['max'] && validator.id_validacion == 1 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['min'] && validator.id_validacion == 2 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['minlength'] && validator.id_validacion == 3 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['maxlength'] && validator.id_validacion == 4 && cuestionarioForm.controls[pregunta.control]?.touched">{{validator.Message}}</p>
+                            </div>
+                            <div>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['pattern'] && cuestionarioForm.controls[pregunta.control]?.touched && pregunta.tipo == 5">Debe contener solo texto</p>
+                                <p style="color: red;" *ngIf="cuestionarioForm.controls[pregunta.control]?.errors?.['pattern'] && cuestionarioForm.controls[pregunta.control]?.touched && pregunta.tipo == 7">Debe contener solo números</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</form>
+
+<div class="margin-3 center_text" style="padding-bottom: 2rem;" *ngIf="!loading">
+    <button mat-button class=" margin-3 btn-siguiente" (click)="finalizarFormulario()">Siguiente</button>
+    <!-- <button mat-button class=" margin-3 btn-siguiente" (click)="downloadPDF()">PDF</button> -->
+</div>

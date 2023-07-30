@@ -1,0 +1,238 @@
+@import "/src/app/utilities/colours.scss";
+
+hr{
+    border:solid;
+}
+#my-select{
+    appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+    outline: 0; 
+  	border: 0;
+	border-radius: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 1em;
+    padding:0px 10px;
+    cursor: pointer;
+    color: #7b7b7b;
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    border:2px solid rgba(0,0,0,0.2);
+    transition: all 0.25s ease;
+    text-align: center;
+    width: 100px;
+   }
+
+   #my-select:hover{
+    background: #d5e6f8;
+}
+
+.botones {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+    padding: 0px 15px;
+    cursor: pointer;
+    border: solid;
+    border-color: #f0f0f0;
+    border-radius: 0% !important;
+    margin-right: 1% !important;
+    input {
+        display: none;
+    }
+}
+
+#botones:hover{
+    border-color: rgb(162, 170, 181);
+}
+
+.botonbien{
+    background-color: rgb(174, 241, 148);
+}
+
+.botona{
+    background-color: lightgray;
+}
+
+.botonInitial {
+    background-color: initial;
+}
+
+
+.botonregular{
+    background-color: rgb(241, 235, 148);
+}
+
+.botonmal{
+    background-color: rgb(241, 151, 148);
+}
+input[type=radio]:checked{
+    background-color: rgb(241, 151, 148);
+}
+
+.botones_juntos
+{
+width: 100%;
+text-align: center;
+}
+
+.margin{
+    margin-left: 2%;
+}
+.colmd-6 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 70%;
+        max-width: 70%;
+        margin-left: 2%;
+    }
+.colmd-4 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 23.333333%;
+        flex: 0 0 23.333333%;
+       margin-left: 2%}
+
+    
+@media (min-width:380px) and (max-width: 450px){
+        .colmd-6 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 50%;
+            flex: 0 0 70%;
+            max-width: 100%;
+            margin-left: 2%;
+        }
+        .colmd-4 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 23.333333%;
+            flex: 0 0 23.333333%;
+           margin-left: 2%;
+           font-size: 15px;
+           font-weight: bold;
+    } 
+    }
+    
+    @media (max-width: 379px){
+        .colmd-6 {
+            font-size: 10px;
+            font-weight: bold;
+            
+        }
+        .botones{
+            font-size: 13px;
+            padding: 0px 12px;
+    
+        }
+        .colmd-4 {
+            font-size: 10px;
+            font-weight: bold;
+           margin-left: 3%;
+    } 
+    }
+    @media (max-width: 372px){
+        .colmd-6 {
+            font-size: 10px;
+            font-weight: bold;
+            
+        }
+        .botones{
+            font-size: 15px !important;
+            padding: 0px 12px !important;
+        }
+        .colmd-4 {
+            font-size: 10px;
+            font-weight: bold;
+           margin-left: 2%;
+    } 
+    }
+
+.btn-siguiente {
+    background-color: $azulPrincipal;
+    color: white;
+}
+
+.radio-item {
+    margin-right: 0.5rem;
+}
+
+:host ::ng-deep .mat-radio-button.radio-bien.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-radio-outer-circle {
+    border-color: green !important;
+    /* Sets outer circle & click effect color */
+}
+:host ::ng-deep .mat-radio-button.radio-bien.mat-accent .mat-radio-inner-circle {
+    background-color: green !important;
+    /* Sets inner circle color */
+}
+
+:host ::ng-deep .mat-radio-button.radio-regular.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-radio-outer-circle {
+    border-color: orange !important;
+    /* Sets outer circle & click effect color */
+}
+:host ::ng-deep .mat-radio-button.radio-regular.mat-accent .mat-radio-inner-circle {
+    background-color: orange !important;
+    /* Sets inner circle color */
+}
+
+:host ::ng-deep .mat-radio-button.radio-mal.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-radio-outer-circle {
+    border-color: red !important;
+    /* Sets outer circle & click effect color */
+}
+:host ::ng-deep .mat-radio-button.radio-mal.mat-accent .mat-radio-inner-circle {
+    background-color: red !important;
+    /* Sets inner circle color */
+}
+
+:host ::ng-deep .mat-radio-button.radio-na.mat-accent.mat-radio-checked .mat-radio-outer-circle, .mat-radio-outer-circle {
+    border-color: gray !important;
+    /* Sets outer circle & click effect color */
+}
+:host ::ng-deep .mat-radio-button.radio-na.mat-accent .mat-radio-inner-circle {
+    background-color: gray !important;
+    /* Sets inner circle color */
+}
+
+.panel-white {
+    background-color: white;
+}
+
+.panel-red {
+    background-color: rgba(255, 0, 0, 0.408) !important;
+}
+
+.panel-green {
+    background-color: rgba(0, 255, 0, 0.408) !important;
+}
+
+.upload-foto {
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    background-color: $violetaPrincipal;
+    color: white;
+    //justify-self: center;
+}
+
+.camera {
+    max-width: 3rem;
+    margin: 0 auto;
+    color: black;
+}
+
+.progress-bar {
+    background-color: lightblue;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin: 2rem 25px 0 25px;
+    width: calc(100% - 50px);
+    height: 1.5rem;
+}
+
+#inner-progress-bar {
+    margin: 0 1px;
+    background-color: rgb(166, 173, 72);
+    width: 0px;
+    height: calc(1.2rem - 2px);
+}

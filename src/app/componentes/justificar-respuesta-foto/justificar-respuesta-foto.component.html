@@ -1,0 +1,25 @@
+<h2 class="main__title"><span>{{ titulo }}</span></h2>
+<h3 class="main__title"><span>Justificar por qué no cumple: </span></h3>
+<div class='justificar'>
+    <div>
+        <textarea type='text' placeholder="Agregar texto..." class="cuadrotexto" value='' [(ngModel)]="respuesta"></textarea>
+    </div>
+    <div class="center_div" *ngIf="false">
+        <img class="iconocam" src="../assets/images/icon/camera-solid.svg" alt="" (click)="uploadFoto()">
+        <!-- Para subir con la camara -->
+        <!-- <input type="file" accept="image/*" capture="environment"> -->
+    </div>
+    <div class="center_div" style="margin-top: 2rem;">
+        <button class="button camera iconocam" mat-button (click)="uploadFoto()">
+            <mat-icon>photo_camera</mat-icon>
+            <input type="file" accept="image/*" capture="environment" style="display: none;" (change)="fileSelect($event)" id="cameraInput">
+        </button>
+    </div>
+    <div class="center_div">
+        <!-- <input type='submit' class="btnsiguiente" value='Siguiente'> -->
+        <button mat-button class="btnsiguiente" (click)="submit()">
+            <div *ngIf="!showSpinner">Siguiente</div>
+            <mat-spinner class="login-button-send" style="margin: 0 auto;" *ngIf="showSpinner" [diameter]="40"></mat-spinner>
+        </button>
+    </div>
+</div>
