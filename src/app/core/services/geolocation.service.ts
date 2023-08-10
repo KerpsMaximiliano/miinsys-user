@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { observable, Observable } from 'rxjs';
 
 // * Interfaces.
 import {
-  IGeoCoordinates,
+  ICoordinates,
+  IGeoAddress,
   IGeoError,
   IGeoPosition,
 } from '../interfaces/geolocation.interface';
@@ -19,7 +20,8 @@ import { LocationModalComponent } from 'src/app/core/components/location-modal/l
   providedIn: 'root',
 })
 export class GeolocationService {
-  private direction: any;
+  private direction: string = '';
+  private url: string = 'https://nominatim.openstreetmap.org/';
 
   constructor(private http: HttpClient, private dialog: MatDialog) {}
 
@@ -49,24 +51,31 @@ export class GeolocationService {
     );
   }
 
-  private handleGeo(position: IGeoCoordinates): void {
+  private handleGeo(position: ICoordinates): void {
     this.getAddressFromCoordinates(
       position.latitude,
       position.longitude
     ).subscribe({
       next: (res: any) => {
-        console.log(res);
+        console.log('geoAddress:', res);
+        this.direction = `${res.address.county}, ${res.address.country}.`;
       },
       error: (err: any) => {
-        console.log(err);
+        console.log('geoAddress:', err);
       },
       complete: () => {},
     });
   }
 
-  private getAddressFromCoordinates(lat: number, lon: number): Observable<any> {
-    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
-    return this.http.get(url);
+  private getAddressFromCoordinates(
+    lat: number,
+    lon: number
+  ): Observable<IGeoAddress> {
+    const url = `${this.url}reverse?lat=${lat}&lon=${lon}&format=json`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.get<IGeoAddress>(url, { headers });
   }
 
   private openModal(): void {
