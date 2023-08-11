@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { observable, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // * Interfaces.
 import {
@@ -16,6 +16,12 @@ import { MatDialog } from '@angular/material/dialog';
 // * Components.
 import { LocationModalComponent } from 'src/app/core/components/location-modal/location-modal.component';
 
+interface GeolocationResult {
+  success: boolean;
+  lat: number | null;
+  lon: number | null;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -29,26 +35,40 @@ export class GeolocationService {
     return this.direction;
   }
 
-  public set(): void {
-    navigator.geolocation.getCurrentPosition(
-      (res: IGeoPosition) => {
-        this.handleGeo(res.coords);
-      },
-      (err: IGeoError) => {
-        switch (err.code) {
-          case 1:
-            this.openModal();
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          default:
-            break;
+  public set(): Observable<GeolocationResult> {
+    return new Observable<GeolocationResult>((observer) => {
+      navigator.geolocation.getCurrentPosition(
+        (res: IGeoPosition) => {
+          this.handleGeo(res.coords);
+          observer.next({
+            success: true,
+            lat: res.coords.latitude,
+            lon: res.coords.longitude,
+          });
+          observer.complete();
+        },
+        (err: IGeoError) => {
+          switch (err.code) {
+            case 1:
+              this.openModal();
+              break;
+            case 2:
+              break;
+            case 3:
+              break;
+            default:
+              break;
+          }
+          console.log(`Status Code ${err.code}: ${err.message}`, 'error');
+          observer.next({
+            success: false,
+            lat: 0,
+            lon: 0,
+          });
+          observer.complete();
         }
-        console.log(`Status Code ${err.code}: ${err.message}`, 'error');
-      }
-    );
+      );
+    });
   }
 
   private handleGeo(position: ICoordinates): void {
@@ -58,7 +78,21 @@ export class GeolocationService {
     ).subscribe({
       next: (res: any) => {
         console.log('geoAddress:', res);
-        this.direction = `${res.address.county}, ${res.address.country}.`;
+
+        const city =
+          res.address?.municipality ||
+          res.address?.city ||
+          res.address?.town ||
+          res.address?.village ||
+          res.address?.city_district ||
+          res.address?.district ||
+          res.address?.borough ||
+          res.address?.suburb ||
+          res.address?.subdivision;
+        const county = res.address?.state || res.address?.county;
+        const country = res.address?.country;
+
+        this.direction = `${city}, ${county}, ${country}`;
       },
       error: (err: any) => {
         console.log('geoAddress:', err);

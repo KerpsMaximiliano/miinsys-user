@@ -39,8 +39,10 @@
     </mat-form-field>
     <mat-form-field class="w-100 mt-1">
       <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">location_on</mat-icon>
-      <input matInput placeholder="Ubicación" [formControlName]="'ubicacion'" style="height: 2rem;">
+      <input matInput placeholder="Ubicación" [formControlName]="'ubicacion'"
+        style="height: 2rem; overflow: hidden; text-overflow: ellipsis;">
     </mat-form-field>
+
     <mat-form-field class="w-50 mt-1">
       <mat-icon matPrefix class="pr-5" style="padding-bottom: 2rem;">check_circle</mat-icon>
       <input matInput placeholder="Respuestas" [formControlName]="'respuestasPositivas'" style="height: 2rem;">

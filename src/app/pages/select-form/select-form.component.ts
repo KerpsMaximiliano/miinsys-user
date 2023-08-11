@@ -110,21 +110,34 @@ export class SelectFormComponent implements OnInit {
   }
 
   accessFormulario(formulario: any) {
-    this.geolocationService.set();
-    navigator.geolocation.getCurrentPosition(
-      (res: any) => {
-        this.cuestionarioService.setLocation(
-          res.coords.latitude,
-          res.coords.longitude
-        );
+    this.geolocationService.set().subscribe((res: any) => {
+      if (res.success) {
+        this.cuestionarioService.setLocation(res.lat, res.lon);
         this.router.navigate([
           `dashboard/cuestionario/${this.companyID}/${this.plantId}/${this.groupId}/${formulario.id}`,
         ]);
-      },
-      (err) => {
-        console.log(`Status Code ${err.code}: ${err.message}`, 'error');
       }
-    );
+    });
+
+    // navigator.geolocation.getCurrentPosition(
+    //   (res: any) => {
+    //     this.cuestionarioService.setLocation(
+    //       res.coords.latitude,
+    //       res.coords.longitude
+    //     );
+    //     this.router.navigate([
+    //       `dashboard/cuestionario/${this.companyID}/${this.plantId}/${this.groupId}/${formulario.id}`,
+    //     ]);
+    //   },
+    //   (err) => {
+    //     console.log(`Status Code ${err.code}: ${err.message}`, 'error');
+    //   }
+    // );
+
+    /**
+     * ----
+     */
+
     // navigator.geolocation.getCurrentPosition(
     //   (position) => {
     //     //console.log(position.coords);
