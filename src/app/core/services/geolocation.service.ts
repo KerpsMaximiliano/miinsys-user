@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // * Interfaces.
@@ -77,22 +77,13 @@ export class GeolocationService {
       position.longitude
     ).subscribe({
       next: (res: any) => {
-        console.log('geoAddress:', res);
-
         const city =
-          res.address?.municipality ||
-          res.address?.city ||
-          res.address?.town ||
-          res.address?.village ||
-          res.address?.city_district ||
-          res.address?.district ||
-          res.address?.borough ||
-          res.address?.suburb ||
-          res.address?.subdivision;
-        const county = res.address?.state || res.address?.county;
+          res.address?.city || res.address?.suburb || res.address?.town;
+        const province =
+          res.address?.province || res.address?.state || res.address?.county;
         const country = res.address?.country;
 
-        this.direction = `${city}, ${county}, ${country}`;
+        this.direction = `${city}, ${province}, ${country}`;
       },
       error: (err: any) => {
         console.log('geoAddress:', err);
@@ -101,15 +92,22 @@ export class GeolocationService {
     });
   }
 
-  private getAddressFromCoordinates(
-    lat: number,
-    lon: number
-  ): Observable<IGeoAddress> {
-    const url = `${this.url}reverse?lat=${lat}&lon=${lon}&format=json`;
+  private getAddressFromCoordinates(lat: number, lon: number): Observable<any> {
+    const queryParams = {
+      addressdetails: '1',
+      format: 'json',
+      'accept-language': 'es',
+    };
+
+    const url = `${this.url}reverse?lat=${lat}&lon=${lon}`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.get<IGeoAddress>(url, { headers });
+
+    const params = new HttpParams({ fromObject: queryParams });
+    const urlWithParams = url + '&' + params.toString();
+
+    return this.http.get<any>(urlWithParams, { headers });
   }
 
   private openModal(): void {
