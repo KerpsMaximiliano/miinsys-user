@@ -20,7 +20,7 @@ export interface IGeoError {
   message: string;
 }
 
-// Address.
+// ! Address. (en desuso)
 export interface IGeoAddress {
   place_id: string;
   licence: string;
@@ -32,6 +32,7 @@ export interface IGeoAddress {
   address: IAddress;
 }
 
+// ! (en desuso)
 export interface IAddress {
   city?: string;
   country: string;

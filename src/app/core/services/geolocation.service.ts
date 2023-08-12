@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // * Interfaces.
 import {
   ICoordinates,
-  IGeoAddress,
   IGeoError,
   IGeoPosition,
 } from '../interfaces/geolocation.interface';
@@ -93,21 +92,11 @@ export class GeolocationService {
   }
 
   private getAddressFromCoordinates(lat: number, lon: number): Observable<any> {
-    const queryParams = {
-      addressdetails: '1',
-      format: 'json',
-      'accept-language': 'es',
-    };
-
-    const url = `${this.url}reverse?lat=${lat}&lon=${lon}`;
+    const url = `${this.url}reverse?lat=${lat}&lon=${lon}&format=json`;
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-
-    const params = new HttpParams({ fromObject: queryParams });
-    const urlWithParams = url + '&' + params.toString();
-
-    return this.http.get<any>(urlWithParams, { headers });
+    return this.http.get<any>(url, { headers });
   }
 
   private openModal(): void {
