@@ -28,6 +28,7 @@ import heic2any from 'heic2any';
 
 // * Services.
 import { GeolocationService } from 'src/app/core/services/geolocation.service';
+import { DateTimeService } from 'src/app/core/services/date-time.service';
 
 @Component({
   selector: 'app-cuestionario-template',
@@ -95,7 +96,8 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
     private usuarioService: UsuariosService,
     private fileService: FilesService,
     public dialog: MatDialog,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private dateTimeService: DateTimeService
   ) {}
 
   /*
@@ -325,11 +327,10 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
                   );
                   this.answeredQuestions++;
                 } else if (preguntaForm.tipo === 9) {
-                  // ! Fecha y hora
                   this.cuestionarioForm.addControl(
                     preguntaForm.control,
                     new FormControl({
-                      value: `${this.getDate()}, ${this.getTime()}`,
+                      value: `${this.dateTimeService.getDateTime()}`,
                       disabled: true,
                     })
                   );
@@ -624,7 +625,7 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
 
     let model = {
       cuestionarioId: Number(this.cuestionarioId),
-      fechaCarga: this.setDate(),
+      fechaCarga: this.dateTimeService.setDateGTM(),
       latitud: this.latitude.toString(),
       longitud: this.longitude.toString(),
       rut: Number(this.currentUser),
@@ -733,7 +734,8 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
                   this.cuestionarioForm.get(pregunta.control)!.value
               )!.id;
             } else if (preguntaEnviar.preguntaTipo == 12) {
-              let date = this.getDate(new Date(preguntaEnviar.preguntaValor));
+              let date: string | Date = new Date(preguntaEnviar.preguntaValor);
+              date = this.dateTimeService.getDate(date);
               preguntaEnviar.preguntaValor = `${date}`;
               preguntaEnviar.preguntaOpcion = pregunta.opciones[0].id;
             } else {
@@ -906,8 +908,6 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
 
   panelCloseBack(seccion: any, index: number) {
     this.panelOpenState = false;
-    //console.log(seccion);
-    //console.log(index);
     let error = false;
     seccion.preguntas.forEach((pregunta: { control: any }) => {
       if (
@@ -1100,59 +1100,6 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
       duration: 5000,
       panelClass: className,
     });
-  }
-
-  /**
-   * Retorna la fecha del usuario local en formato: DD-MM-YYYY
-   * Añade un 0 si son menos de 10 dias para dar el formato 0D.
-   * Añade un 0 si son menos de 10 meses para dar el formato 0M.
-   * Opcionalmente puede recibir una fecha.
-   * @returns string: representa la fecha del dispositivo del usuario.
-   */
-  private getDate(d?: Date): string {
-    let date = new Date();
-    if (d) date = d;
-
-    let year: number = date.getFullYear();
-
-    let day: string | number = date.getDate();
-    if (date.getDay() < 10) day = `0${date.getDay()}`;
-
-    let month: string | number = date.getMonth() + 1;
-    if (date.getMonth() < 10) day = `0${date.getMonth()}`;
-
-    return `${day} - ${month} - ${year}`;
-  }
-
-  /**
-   * Retorna la fecha y hora del usuario local.
-   * @returns Date: representa la hora del usuario menos el GMT del usuario.
-   */
-  private setDate(): Date {
-    let date = new Date();
-    let hours = date.getHours();
-    let gmt = date.getTimezoneOffset() / 60;
-    gmt > 0 ? (hours -= gmt) : (hours += gmt);
-    date = new Date(date.setHours(hours));
-    return date;
-  }
-
-  /**
-   * Retorna la hora del usuario local en formato: HH:MM.
-   * Añade un 0 si son menos de 10 horas para dar el formato 0H.
-   * Añade un 0 si son menos de 10 minutos para dar el formato 0M.
-   * @returns string: representa la hora del dispositivo del usuario.
-   */
-  private getTime(): string {
-    let date = new Date();
-
-    let hours: string | number = date.getHours();
-    if (date.getHours() < 10) hours = `0${date.getHours()}`;
-
-    let minutes: string | number = date.getMinutes();
-    if (date.getMinutes() < 10) minutes = `0${date.getMinutes()}`;
-
-    return `${hours}:${minutes}`;
   }
 }
 
