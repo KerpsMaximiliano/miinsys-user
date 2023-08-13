@@ -325,14 +325,11 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
                   );
                   this.answeredQuestions++;
                 } else if (preguntaForm.tipo === 9) {
-                  //Fecha y hora
-                  let currentDate = new Date();
+                  // ! Fecha y hora
                   this.cuestionarioForm.addControl(
                     preguntaForm.control,
                     new FormControl({
-                      value: `${currentDate.getDate()}-${
-                        currentDate.getMonth() + 1
-                      }-${currentDate.getFullYear()}, ${currentDate.getHours()}:${currentDate.getMinutes()}`,
+                      value: `${this.getDate()}, ${this.getTime()}`,
                       disabled: true,
                     })
                   );
@@ -621,14 +618,13 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
     }
 
     this.loading = true;
+
     this.latitude = this.cuestionarioService.getLocation().latitude;
     this.longitude = this.cuestionarioService.getLocation().longitude;
-    let date = new Date();
-    date = this.addHoursToDate(date, -3);
-    console.log(this.cuestionarioForm);
+
     let model = {
       cuestionarioId: Number(this.cuestionarioId),
-      fechaCarga: date,
+      fechaCarga: this.setDate(),
       latitud: this.latitude.toString(),
       longitud: this.longitude.toString(),
       rut: Number(this.currentUser),
@@ -737,10 +733,8 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
                   this.cuestionarioForm.get(pregunta.control)!.value
               )!.id;
             } else if (preguntaEnviar.preguntaTipo == 12) {
-              let date = new Date(preguntaEnviar.preguntaValor);
-              preguntaEnviar.preguntaValor = `${date.getDate()}-${
-                date.getMonth() + 1
-              }-${date.getFullYear()}`;
+              let date = this.getDate(new Date(preguntaEnviar.preguntaValor));
+              preguntaEnviar.preguntaValor = `${date}`;
               preguntaEnviar.preguntaOpcion = pregunta.opciones[0].id;
             } else {
               preguntaEnviar.preguntaOpcion = pregunta.opciones[0].id;
@@ -793,7 +787,6 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
       };
       this.cuestionarioService.setAnswerBack(modelPlanificado);
       if (this.latitude != 0 && this.longitude != 0) {
-        // model.info_gps = 'Capital Federal, CABA';
         model.info_gps = this.geolocationService.get();
         this.cuestionarioService.setPlanificadoFinalAnswer(model);
         this.router.navigate([
@@ -807,19 +800,6 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
             this.cuestionarioId +
             '/planificado',
         ]);
-        // this.usuarioService.getLocation(this.latitude, this.longitude).subscribe(resLocation => {
-        //   const parser = new DOMParser();
-        //   const xmlDoc = parser.parseFromString(resLocation, 'text/xml');
-        //   if(xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('city')[0] == undefined) {
-        //     //console.log(`${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('town')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`);
-        //     model.info_gps = `${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('town')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`;
-        //   } else {
-        //     //console.log(`${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('city')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`);
-        //     model.info_gps = `${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('city')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`;
-        //   }
-        //   this.cuestionarioService.setPlanificadoFinalAnswer(model);
-        //   this.router.navigate(['/dashboard/cuestionario/' + this.companyID + '/' + this.workCenterID + '/' + this.servicesTypeID + '/' + this.cuestionarioId + '/planificado']);
-        // });
       } else {
         model.info_gps = 'Sin datos de ubicación';
         this.cuestionarioService.setPlanificadoFinalAnswer(model);
@@ -837,28 +817,9 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
       }
     } else {
       if (this.latitude != 0 && this.longitude != 0) {
-        // model.info_gps = 'Capital Federal, CABA';
         model.info_gps = this.geolocationService.get();
         this.cuestionarioService.setPlanificadoFinalAnswer(model);
         this.router.navigate(['/dashboard/previewCuestionario']);
-        // this.usuarioService.getLocation(this.latitude, this.longitude).subscribe(resLocation => {
-        //   const parser = new DOMParser();
-        //   const xmlDoc = parser.parseFromString(resLocation, 'text/xml');
-        //   console.log(`${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('city')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`);
-        //   model.info_gps = `${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('city')[0].innerHTML}, ${xmlDoc.getElementsByTagName('addressparts')[0].getElementsByTagName('state')[0].innerHTML}`;
-        //   this.cuestionarioService.setPlanificadoFinalAnswer(model);
-        //   this.router.navigate(['/dashboard/previewCuestionario']);
-        //   // this.usuarioService.postCuestionario(model).subscribe(d => {
-        //   //   //this.downloadPDF();
-        //   //   this.fileService.traerArchivo(d.id_imagen, 4).subscribe(res => {
-        //   //     FileSaver.saveAs(this.fileService.b64toBlob(res.file, 'application/pdf'), res.fileName);
-        //   //     this.saveToCookies(model, d.id);
-        //   //     this.loading = false;
-        //   //     this.openSnackBar(d.message + " - id: " + d.id, "Cerrar", "big-success-snackbar");
-        //   //     this.router.navigate(['/dashboard/cuestionarioSend']);
-        //   //   })
-        //   // })
-        // });
       } else {
         model.info_gps = 'Sin datos de ubicación';
         this.cuestionarioService.setPlanificadoFinalAnswer(model);
@@ -1134,15 +1095,64 @@ export class CuestionarioTemplateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addHoursToDate(date: Date, hours: number): Date {
-    return new Date(new Date(date).setHours(date.getHours() + hours));
-  }
-
   openSnackBar(message: string, action: string, className: string) {
     this._snackBar.open(message, action, {
       duration: 5000,
       panelClass: className,
     });
+  }
+
+  /**
+   * Retorna la fecha del usuario local en formato: DD-MM-YYYY
+   * Añade un 0 si son menos de 10 dias para dar el formato 0D.
+   * Añade un 0 si son menos de 10 meses para dar el formato 0M.
+   * Opcionalmente puede recibir una fecha.
+   * @returns string: representa la fecha del dispositivo del usuario.
+   */
+  private getDate(d?: Date): string {
+    let date = new Date();
+    if (d) date = d;
+
+    let year: number = date.getFullYear();
+
+    let day: string | number = date.getDate();
+    if (date.getDay() < 10) day = `0${date.getDay()}`;
+
+    let month: string | number = date.getMonth() + 1;
+    if (date.getMonth() < 10) day = `0${date.getMonth()}`;
+
+    return `${day} - ${month} - ${year}`;
+  }
+
+  /**
+   * Retorna la fecha y hora del usuario local.
+   * @returns Date: representa la hora del usuario menos el GMT del usuario.
+   */
+  private setDate(): Date {
+    let date = new Date();
+    let hours = date.getHours();
+    let gmt = date.getTimezoneOffset() / 60;
+    gmt > 0 ? (hours -= gmt) : (hours += gmt);
+    date = new Date(date.setHours(hours));
+    return date;
+  }
+
+  /**
+   * Retorna la hora del usuario local en formato: HH:MM.
+   * Añade un 0 si son menos de 10 horas para dar el formato 0H.
+   * Añade un 0 si son menos de 10 minutos para dar el formato 0M.
+   * @returns string: representa la hora del dispositivo del usuario.
+   */
+  private getTime(): string {
+    let date = new Date();
+
+    let hours: string | number = date.getHours();
+    if (date.getHours() < 10) hours = `0${date.getHours()}`;
+
+    let minutes: string | number = date.getMinutes();
+    if (date.getMinutes() < 10) minutes = `0${date.getMinutes()}`;
+
+    return `${hours}:${minutes}`;
   }
 }
 

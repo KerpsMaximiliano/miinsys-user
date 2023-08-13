@@ -17,6 +17,8 @@ export class CuestionarioSendComponent implements OnInit {
   formularioSendForm: FormGroup;
   answer = {};
 
+  private date: Date = new Date();
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -44,17 +46,14 @@ export class CuestionarioSendComponent implements OnInit {
     }, 300000);
 
     this.answer = this.cuestionarioService.getSimpleAnswer();
-    const date = new Date();
     let position = this.cuestionarioService.getLocation();
 
     this.formularioSendForm.patchValue({
       usuario: `${
         JSON.parse(sessionStorage.getItem('usuarioLogueado')!).username
       }`,
-      fecha: `${date.getDate()} - ${
-        date.getMonth() + 1
-      } - ${date.getFullYear()}`,
-      hora: `${date.getHours()} : ${date.getMinutes()}`,
+      fecha: this.getDate(),
+      hora: this.getTime(),
       ubicacion: this.geolocationService.get(),
       respuestasPositivas: `${scores.positive} Positiva${
         scores.positive != 1 ? 's' : ''
@@ -75,5 +74,42 @@ export class CuestionarioSendComponent implements OnInit {
 
   sendFormulario() {
     this.router.navigate(['/dashboard/selectBusiness']);
+  }
+
+  /**
+   * Retorna la hora del usuario local en formato: HH:MM.
+   * Añade un 0 si son menos de 10 horas para dar el formato 0H.
+   * Añade un 0 si son menos de 10 minutos para dar el formato 0M.
+   * @returns string: representa la hora del dispositivo del usuario.
+   */
+  private getTime(): string {
+    let date = new Date();
+
+    let hours: string | number = date.getHours();
+    if (date.getHours() < 10) hours = `0${date.getHours()}`;
+
+    let minutes: string | number = date.getMinutes();
+    if (date.getMinutes() < 10) minutes = `0${date.getMinutes()}`;
+
+    return `${hours}:${minutes}`;
+  }
+
+  /**
+   * Retorna la fecha del usuario local en formato: DD-MM-YYYY
+   * Añade un 0 si son menos de 10 dias para dar el formato 0D.
+   * Añade un 0 si son menos de 10 meses para dar el formato 0M.
+   * @returns string: representa la fecha del dispositivo del usuario.
+   */
+  private getDate(): string {
+    let date = new Date();
+    let year: number = date.getFullYear();
+
+    let day: string | number = date.getDate();
+    if (date.getDay() < 10) day = `0${date.getDay()}`;
+
+    let month: string | number = date.getMonth() + 1;
+    if (date.getMonth() < 10) day = `0${date.getMonth()}`;
+
+    return `${day} - ${month} - ${year}`;
   }
 }
