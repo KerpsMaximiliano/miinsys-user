@@ -25,7 +25,7 @@ interface GeolocationResult {
   providedIn: 'root',
 })
 export class GeolocationService {
-  private direction: string = '';
+  private direction: string = 'No se ha podido ubicar el dispositivo.';
   private url: string = 'https://nominatim.openstreetmap.org/';
 
   constructor(private http: HttpClient, private dialog: MatDialog) {}
